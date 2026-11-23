@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRUTHLOCK — التحقق من الكود السري</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Tahoma", "Segoe UI", Arial, sans-serif;
+      background: #141210;
+      color: #f4efe6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .panel {
+      width: 100%;
+      max-width: 420px;
+      background: #1d1a17;
+      border: 1px solid #3a332b;
+      border-top: 4px solid #962828;
+      border-radius: 6px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+    .brand {
+      font-family: "Courier New", monospace;
+      letter-spacing: 3px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #e6dfd3;
+      margin-bottom: 6px;
+    }
+    .case-label {
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      color: #d45555;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+    p {
+      font-size: 13.5px;
+      color: #c7bfb2;
+      margin: 0 0 18px;
+      line-height: 1.55;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: "Courier New", monospace;
+      font-size: 17px;
+      text-align: center;
+      letter-spacing: 2px;
+      color: #fff;
+      background: #12100e;
+      border: 1.5px solid #4a4137;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    input:focus {
+      border-color: #c93b3b;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-family: "Tahoma", sans-serif;
+      font-size: 14.5px;
+      font-weight: bold;
+      color: #fff;
+      background: #962828;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ad3030;
+    }
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      display: none;
+      line-height: 1.55;
+    }
+    .status.approved {
+      display: block;
+      background: rgba(36, 120, 72, 0.2);
+      border: 1px solid #359c62;
+      color: #9ef0c0;
+    }
+    .status.retry {
+      display: block;
+      background: rgba(150, 40, 40, 0.22);
+      border: 1px solid #c93b3b;
+      color: #ffb3b3;
+    }
+    .clue-unlock {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(158, 240, 192, 0.35);
+      font-size: 13px;
+      color: #e9fff2;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="brand">TRUTHLOCK</div>
+    <div class="case-label">CASE #001 // SECRET CODE VERIFICATION</div>
+    <h1>إدخال الكود السري</h1>
+    <p>أدخل الكود المتصل المكوّن من الأرقام الأربعة المستخرجة من الشخصيات لفتح الدليل الإضافي.</p>
+
+    <input
+      id="codeInput"
+      type="text"
+      inputmode="numeric"
+      placeholder="أدخل الكود هنا"
+      autocomplete="off"
+      onkeydown="if(event.key==='Enter') verifyCode()"
+    />
+    <button onclick="verifyCode()">تحقق من الكود</button>
+
+    <div id="statusBox" class="status"></div>
+  </div>
+
+  <script>
+    const VALID_CODES = ["39198410153", "39-1984-1015-3"];
+
+    function verifyCode() {
+      const raw = document.getElementById("codeInput").value.trim().replace(/\s+/g, "");
+      const box = document.getElementById("statusBox");
+
+      if (!raw) {
+        box.className = "status retry";
+        box.innerHTML = "الرجاء إدخال الكود أولاً ثم المحاولة مرة أخرى.";
+        return;
+      }
+
+      if (VALID_CODES.includes(raw)) {
+        box.className = "status approved";
+        box.innerHTML = `
+          <strong>APPROVED</strong> — تم تأكيد الكود بنجاح.<br />
+          <div class="clue-unlock">
+            <strong>الدليل الإضافي المفتوح:</strong> سجل تدقيق مالي يوثّق سحوبات وتحويلات غير موثقة بقيمة <strong>$85,000</strong> مرتبطة بحسابات الصيانة، وكان طلال منصور قد جهّزها لمواجهة كريم ناصيف بعد انتهاء المزاد.
+          </div>
+        `;
+      } else {
+        box.className = "status retry";
+        box.innerHTML = "الكود غير صحيح — راجع الأرقام وحاول مرة أخرى.";
+      }
+    }
+  </script>
+</body>
+</html>
